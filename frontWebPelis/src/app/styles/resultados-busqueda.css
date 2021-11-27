@@ -1,0 +1,9 @@
+.dv-resultados {
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+}
+
+.dv-resultados > *{
+    flex-basis: 30%;
+}
