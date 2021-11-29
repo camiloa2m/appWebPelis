@@ -1,9 +1,9 @@
-import ResultadosBusqueda from "./app/pages/ResultadosBusqueda";
+import Routes from "./app/routes/Routes";
 
 function App() {
   return (
     <>
-      <ResultadosBusqueda/>
+      <Routes/>
     </>
   );
 }

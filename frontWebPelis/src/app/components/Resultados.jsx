@@ -1,29 +1,31 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStarHalfAlt } from "@fortawesome/free-solid-svg-icons";
+import { useHistory } from "react-router";
 import "../styles/resultados.css";
 
 export default function Resultados(props){
+    let history = useHistory();
 
     function handleClick(event){
-        event.preventDefault();
-        event.stopPropagation();
-        alert("Redireccionar al detalle de la pelicula")
+        history.push("/detalle/" + props.pelicula._id)
     }
 
     return(
         <>
         <div className="dv-pelicula" onClick={handleClick}>
             <div className="dv-poster" >
-                <img src="https://es.web.img3.acsta.net/pictures/21/11/15/18/17/0807353.jpg" alt=""/>
+                <img src={props.pelicula.poster} alt="Póster"/>
             </div>
             <div>
-                <h1>Título de la película</h1>
+                <h1>{props.pelicula.titulo}</h1>
             </div>
             <div>
-                <p>Sinopsis</p>
+                <p>{props.pelicula.sinopsis}</p>
             </div>
             <div>
                 <span>
-                    Rating:
-                    <i></i>
+                    <FontAwesomeIcon icon = {faStarHalfAlt}/>
+                    {props.pelicula.rating}
                 </span>
             </div>
         </div>

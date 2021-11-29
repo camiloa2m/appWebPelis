@@ -1,11 +1,29 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Resultados from "../components/Resultados";
+import * as PeliculasService from "../services/PeliculasService";
 import "../styles/resultados-busqueda.css"
 
 
 export default function ResultadosBusqueda(){
     const [busqueda, setBusqueda] = useState("");
     const [resultados, setResultados] = useState([]);
+
+    /* Efecto:
+        1. Siempre se ejecuta una vez -> montaje del componente
+        2. Por cada cambio de estado despues de renderixar se ejecuta -> actualización
+        3. Adicionar return para desmontaje -> desmontaje
+     */
+    useEffect(() => {
+        if (busqueda.length >= 3){
+            PeliculasService.servicioBusquedaTitulo(busqueda)
+            .then(function(resultadosBusqueda){
+                setResultados(resultadosBusqueda.data);
+            })
+        } else {
+            setResultados([]);
+        }
+    }, [busqueda]) // busquedaAnterior != nueva busquedaNueva? se ejecuta: no se ejecuta
+    // en el array [busqueda], segundo parametro, se pone la variable que queremos que se monitorice
 
     function handleSubmit(event){
         event.preventDefault();
@@ -14,9 +32,6 @@ export default function ResultadosBusqueda(){
     function handleChange(event){
         let tituloPelicula = event.target.value;
         setBusqueda(tituloPelicula);
-
-        let ResultadosBusqueda = new Array(event.target.value.length).fill(0);
-        setResultados(ResultadosBusqueda)
     }
 
     return(
@@ -35,7 +50,7 @@ export default function ResultadosBusqueda(){
                 <div><span> Resultados para: {busqueda}</span></div>
                 <div className="dv-resultados">
                     {resultados && resultados.length > 0 && resultados.map(pelicula => (
-                        <Resultados/>
+                        <Resultados pelicula={pelicula}/>
                     ))}
                 </div>
             </fieldset>
