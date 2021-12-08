@@ -6,13 +6,25 @@ export default function Header(props){
 
     function handleClick(event){
         event.preventDefault();
-        history.push("/login")
+        if (event.target.value === "iniciar"){
+            history.push("/login");
+        } else {
+            localStorage.removeItem("auth");
+            props.autenticado(null);
+            history.push("/");
+        }
+
     }
 
     return(
         <>
             <header className="header">
-                <button type="button" onClick={handleClick}>Iniciar Sesión</button>
+                {!props.usuario &&
+                    <button type="button" onClick={handleClick} value="iniciar">Iniciar Sesión</button>
+                }
+                {props.usuario &&
+                    <button type="button" onClick={handleClick} value="cerrar">Cerrar Sesión</button>
+                }
             </header>
             {props.children}
         </>

@@ -6,7 +6,7 @@ const objectId = require('mongodb').ObjectId;
 function buscarTodo(){
     let conexion = basedatos.obtenerConexion();
 
-    return conexion.collection("peliculas").find({}).toArray()
+    return conexion.collection("peliculas").find({}).limit(50).toArray()
         .then(function(data){
             return data;
         })
