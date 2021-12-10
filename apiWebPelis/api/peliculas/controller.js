@@ -15,7 +15,7 @@ controladorPeliculas.get("/obtenerPeliculas", rutaProtegida, async function(req,
 });
 
 // obtener pelicula por id
-controladorPeliculas.get("/obtenerPelicula/:id",  rutaProtegida, async function(req, res){
+controladorPeliculas.get("/obtenerPelicula/:id", async function(req, res){
     let id = req.params.id;
     let pelicula = await servicioPeliculas.obtenerPelicula(id);
     res.send({

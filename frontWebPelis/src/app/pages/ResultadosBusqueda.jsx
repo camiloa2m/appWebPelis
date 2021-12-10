@@ -16,9 +16,12 @@ export default function ResultadosBusqueda(){
     useEffect(() => {
         if (busqueda.length >= 3){
             PeliculasService.servicioBusquedaTitulo(busqueda)
-            .then(function(resultadosBusqueda){
-                setResultados(resultadosBusqueda.data);
-            })
+                .then(function(resultadosBusqueda){
+                    setResultados(resultadosBusqueda.data);
+                })
+                .catch(function(error){
+                    console.log(error);
+                })
         } else {
             setResultados([]);
         }

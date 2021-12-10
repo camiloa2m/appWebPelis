@@ -24,7 +24,7 @@ export default function DetallePelicula(){
         <>
         <div className="div-general_detalle">
             <fieldset>
-            <legend>Detalle Película {id}</legend>
+            <legend>Detalle Película</legend>
             <h1>{pelicula.titulo}</h1>
             <div className="div-main_detalle">
                 <div className="div-poster_detalle">
