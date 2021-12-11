@@ -1,19 +1,27 @@
-Put and complete the info below in a .env file:
+# API development with Express.js and Node.js
+
+1. Put and complete the info below in a .env file:
 
 ```
 # GENERAL CONFIGURATION
-PORT =   
+PORT =
 MORGAN_MODE = 'dev'
 
 # DATABASE DATA INFO
-MONGODB_URI = 
-MONGODB_DB = 
+MONGODB_URI =
+MONGODB_DB =
 
 # ENCRYPTION
-ENC_SALT_ROUNDS = 
+ENC_SALT_ROUNDS =
 
 # JWT
-JWT_CLAVE = 
-JWT_EXPIRES = 
+JWT_CLAVE =
+JWT_EXPIRES =
 ```
+
+1. Install the dependencies to the local node_modules folder:
+
+```npm i```
+
+
 
