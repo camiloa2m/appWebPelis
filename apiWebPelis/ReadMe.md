@@ -19,7 +19,7 @@ JWT_CLAVE =
 JWT_EXPIRES =
 ```
 
-1. Install the dependencies to the local node_modules folder:
+2. Install the dependencies to the local node_modules folder:
 
 ```npm i```
 
