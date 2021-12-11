@@ -1,7 +1,8 @@
 import { useState } from "react";
 import ListarPeliculas from "../components/ListarPeliculas";
 import * as PeliculasService from "../services/PeliculasService";
-import FormActores from "../components/FormActores";;
+import FormActores from "../components/FormActores";
+import FormDetalles from "../components/FormDetalles";
 
 export default function AdministrarPeliculas(){
     const [titulo, setTitulo] = useState("");
@@ -12,6 +13,11 @@ export default function AdministrarPeliculas(){
     const [sinopsis, setSinopsis] = useState("");
     const [poster, setPoster] = useState("");
     const [actores, setActores] = useState([]);
+    const [generos, setGeneros] = useState([]);
+    const [idiomas, setIdiomas] = useState([]);
+    const [paises, setPaises] = useState([]);
+    const [directores, setDirectores] = useState([]);
+    const [nominaciones, setNominaciones] = useState({total:null, ganadas:null});
 
     function handleChange(event){
         let {name, value} = event.target;
@@ -37,6 +43,12 @@ export default function AdministrarPeliculas(){
             case "poster":
                 setPoster(value)
             break;
+            case "total":
+            case "ganadas":
+                setNominaciones(nominaciones => (
+                    {...nominaciones, [name]: value}
+                ))
+            break;
             default:
             break;
         }
@@ -53,7 +65,12 @@ export default function AdministrarPeliculas(){
             "clasificacion": clasificacion,
             "sinopsis": sinopsis,
             "tipo": tipo,
-            "actores": actores
+            "actores": actores,
+            "generos": generos,
+            "paises": paises,
+            "idiomas": idiomas,
+            "directores": directores,
+            "nominaciones": nominaciones
         }
 
         PeliculasService.servicioCrearPelicula(pelicula)
@@ -67,6 +84,12 @@ export default function AdministrarPeliculas(){
                     setClasificacion("")
                     setSinopsis("")
                     setPoster("")
+                    setActores("")
+                    setGeneros([])
+                    setPaises([])
+                    setIdiomas([])
+                    setDirectores([])
+                    setNominaciones({total:"", ganadas:""})
                 }else{
                     alert("Error al crear película")
                 }
@@ -78,8 +101,15 @@ export default function AdministrarPeliculas(){
 
     function handleClickActores(event){
         event.preventDefault();
-        const nuevosActores = [ ...actores, {nombre:"", apellido:""}];
-        setActores(nuevosActores);
+        const { name, value } = event.target;
+        if(name === "btnAdicionar"){
+            const nuevosActores = [ ...actores, {nombre:"", apellido:""}];
+            setActores(nuevosActores);
+        }else{
+            setActores(actores => (
+                actores.filter((actor, idx)=> idx !== parseInt(value))
+            ))
+        }
     }
 
     function handleChangeActores(event){
@@ -96,6 +126,53 @@ export default function AdministrarPeliculas(){
             })
         ))
     }
+
+    function handleClickDetalle(tag, elemento, accion, index = null){
+        if(accion === "adicionar"){
+            switch(elemento){
+                case "generos":
+                    setGeneros([...generos, tag]);
+                break;
+                case "idiomas":
+                    setIdiomas([...idiomas, tag]);
+                break;
+                case "paises":
+                    setPaises([...paises, tag]);
+                break;
+                case "directores":
+                    setDirectores([...directores, tag]);
+                break;
+                default:
+                break;
+            }
+        }else{
+            switch(elemento){
+                case "generos":
+                    setGeneros(generos => (
+                        generos.filter((genero, idx) => idx !== parseInt(index))
+                    ));
+                break;
+                case "idiomas":
+                    setIdiomas(idiomas => (
+                        idiomas.filter((idioma, idx) => idx !== parseInt(index))
+                    ));
+                break;
+                case "paises":
+                    setPaises(paises => (
+                        paises.filter((pais, idx) => idx !== parseInt(index))
+                    ));
+                break;
+                case "directores":
+                    setDirectores(directores => (
+                        directores.filter((director, idx) => idx !== parseInt(index))
+                    ));
+                break;
+                default:
+                break;
+            }
+        }
+    }
+
 
     return(
         <>
@@ -132,13 +209,10 @@ export default function AdministrarPeliculas(){
                             <label htmlFor="tipo">Tipo: </label>
                             <input type="text" name="tipo" id="tipo" value={tipo} onChange={handleChange}/>
                         </div>
-                        <div>
-                            <button type="button" onClick={handleClick}>Guardar</button>
-                        </div>
                         <fieldset>
                             <legend>Actores</legend>
                             <div>
-                                <button type="button" onClick={handleClickActores}>Agregar Actores</button>
+                                <button type="button" onClick={handleClickActores} name="btnAdicionar">Agregar Actor</button>
                             </div>
                             <div>
                                 {actores && actores.map((actor, idx) => (
@@ -146,10 +220,46 @@ export default function AdministrarPeliculas(){
                                     key={idx}
                                     id={idx}
                                     actor={actor}
-                                    onChange={handleChangeActores}/>
+                                    onChange={handleChangeActores}
+                                    onClick={handleClickActores}
+                                    />
                                 ))}
                             </div>
                         </fieldset>
+                        <FormDetalles
+                            titulo="Géneros"
+                            id="generos"
+                            datos={generos}
+                            onClick={handleClickDetalle}/>
+                        <FormDetalles
+                            titulo="Idiomas"
+                            id="idiomas"
+                            datos={idiomas}
+                            onClick={handleClickDetalle}/>
+                        <FormDetalles
+                            titulo="Países"
+                            id="paises"
+                            datos={paises}
+                            onClick={handleClickDetalle}/>
+                        <FormDetalles
+                            titulo="Directores"
+                            id="directores"
+                            datos={directores}
+                            onClick={handleClickDetalle}/>
+                        <fieldset>
+                            <legend>Nominaciones</legend>
+                            <div>
+                                <label htmlFor="total">Total: </label>
+                                <input type="text" name="total" id="total" value={nominaciones.total} onChange={handleChange}/>
+                            </div>
+                            <div>
+                                <label htmlFor="ganadas">Ganadas: </label>
+                                <input type="text" name="ganadas" id="ganadas" value={nominaciones.ganadas} onChange={handleChange}/>
+                            </div>
+                        </fieldset>
+                        <div>
+                            <button type="button" onClick={handleClick}>Guardar</button>
+                        </div>
                     </form>
                 </fieldset>
                 <fieldset>

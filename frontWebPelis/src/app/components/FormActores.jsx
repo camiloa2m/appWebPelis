@@ -20,6 +20,9 @@ export default function FormActores(props){
                     value={props.actor.apellido}
                     onChange={props.onChange}/>
             </div>
+            <div>
+                <button type="button" name="btnEliminar" value={props.id} onClick={props.onClick}>Eliminar</button>
+            </div>
         </>
     )
 }
