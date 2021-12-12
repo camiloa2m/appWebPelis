@@ -9,6 +9,8 @@ require('dotenv').config();
 const cors = require('cors');
 const helmet = require('helmet');
 const compression = require('compression');
+const path = require('path');
+const res = require('express/lib/response');
 
 // Iniciar express
 const app = express();
@@ -27,6 +29,13 @@ app.use(morgan(process.env.MORGAN_MODE));
 // usar los controladores
 app.use("/api/peliculas", controladorPeliculas);
 app.use("/api/usuarios", controladorUsuarios);
+
+// configurar carpeta pública
+const publicPath = path.resolve(__dirname, 'public');
+app.use(express.static(publicPath));
+app.get("/", function (req, res) {
+    res.sendFile(path.join(__dirname + "./index.html"))
+});
 
 
 basedatos.conectar()
